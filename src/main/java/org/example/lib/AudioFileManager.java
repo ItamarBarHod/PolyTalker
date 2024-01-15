@@ -1,6 +1,7 @@
 package org.example.lib;
 
-import org.w3c.dom.ls.LSOutput;
+import model.User;
+import model.UserID;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,27 +13,34 @@ import java.util.Arrays;
 public class AudioFileManager {
 
     public static final String soundPath = "./sounds/";
-    public void make(String language, String nickName, String userName) throws IOException {
+    public static void make(String language, String nickName, UserID id) {
 
-        String[] command = getMakeCommand(language, nickName, userName);
-
-        ProcessBuilder processBuilder = new ProcessBuilder(Arrays.asList(command));
-        processBuilder.directory(new File(soundPath));
-        Process process = processBuilder.start();
+        String[] command = getMakeCommand(language, nickName, id);
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(Arrays.asList(command));
+            processBuilder.directory(new File(soundPath));
+            Process process = processBuilder.start();
+            process.waitFor();
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private String[] getMakeCommand(String language, String nickName, String userName) {
-        return new String[]{"gtts-cli", "-l", language, "\""+nickName+"\"", "--output", userName + ".mp3"};
+    private static String[] getMakeCommand(String language, String nickName, UserID id) {
+        return new String[]{"gtts-cli", "-l", language, "\""+nickName+"\"", "--output", id.toString() + ".mp3"};
     }
 
-    public void delete(String userName) {
+    public static void delete(UserID id) {
 
         try {
-            Path path = Paths.get(soundPath + userName + ".mp3");
+            Path path = Paths.get(createAudioPath(id));
             Files.deleteIfExists(path);
-
         } catch (IOException ex) {
             System.out.println("File error");
         }
+    }
+
+    public static String createAudioPath(UserID id) {
+        return soundPath + id.toString() + ".mp3";
     }
 }

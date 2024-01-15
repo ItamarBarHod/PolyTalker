@@ -23,7 +23,7 @@ public class LanguageManager {
         return false;
     }
 
-    public void createLocaleFile() throws IOException {
+    public static void createLocaleFile() throws IOException {
 
         ProcessBuilder processBuilder = new ProcessBuilder("gtts-cli", "--all");
         String localePath = "./locale/";
@@ -38,7 +38,10 @@ public class LanguageManager {
         StringBuilder languages = new StringBuilder();
 
         while (scanner.hasNextLine()) {
-            languages.append(scanner.nextLine()).append("\n");
+            String line = scanner.nextLine();
+            int index = line.indexOf(String.valueOf(":"));
+            String fixedLine = line.replace(":", " -> ");
+            languages.append(fixedLine).append('\n');
         }
         return languages.toString();
     }

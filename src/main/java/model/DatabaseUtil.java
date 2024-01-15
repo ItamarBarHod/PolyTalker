@@ -1,6 +1,5 @@
 package model;
 
-import jakarta.persistence.NoResultException;
 import org.example.lib.LanguageManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,34 +32,18 @@ public class DatabaseUtil {
         return factory.getCurrentSession();
     }
 
-    public static boolean userExists(String userName) {
-        boolean result = false;
-        try (Session session = getSession()) {
-            session.getTransaction().begin();
-            User user = (User) session.get(User.class, userName);
-            result = user != null;
-            session.getTransaction().commit();
-        } catch (NoResultException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-    public static void changePreference(String userName, String locale) {
+    public static void changePreference(UserID id, String locale) {
         try (Session session = getSession()) {
             session.beginTransaction();
-
-            User user = (User) session.get(User.class, userName);
 
             Preference pref = session.createSelectionQuery(
                     "SELECT p FROM Preference p WHERE locale = :locale", Preference.class)
                     .setParameter("locale", locale)
                     .getSingleResult();
 
-            System.out.println(pref);
-
+            User user = (User) session.get(User.class, id);
             user.setPreference(pref.getId());
-            System.out.println(user);
+
             session.merge(user);
             session.getTransaction().commit();
         } catch (Exception ex) {
@@ -68,12 +51,11 @@ public class DatabaseUtil {
         }
     }
 
-
-    public static String getLocale(String userName) {
+    public static String getLocale(UserID id) {
         try (Session session = getSession()) {
             session.beginTransaction();
 
-            User user = (User) session.get(User.class, userName);
+            User user = (User) session.get(User.class, id);
 
             Preference pref = session.createSelectionQuery(
                     "SELECT p FROM Preference p WHERE id = :id", Preference.class)
@@ -89,12 +71,12 @@ public class DatabaseUtil {
         return null;
     }
 
-    public static boolean changedNickname(String userName, String nickName) {
+    public static boolean changedNickname(UserID id, String nickName) {
         boolean changed = false;
         try (Session session = getSession()) {
             session.beginTransaction();
 
-            User user = (User) session.get(User.class, userName);
+            User user = (User) session.get(User.class, id);
             changed = !user.getNickName().equals(nickName);
 
             session.getTransaction().commit();
@@ -104,11 +86,11 @@ public class DatabaseUtil {
         return changed;
     }
 
-    public static void updateUser(String userName, String nickName) {
+    public static void updateUser(UserID id, String nickName) {
         try (Session session = getSession()) {
             session.beginTransaction();
 
-            User user = (User) session.get(User.class, userName);
+            User user = (User) session.get(User.class, id);
             user.setNickName(nickName);
             session.merge(user);
             session.getTransaction().commit();
@@ -116,7 +98,8 @@ public class DatabaseUtil {
             ex.printStackTrace();
         }
     }
-    public static void createUser(String userName, String nickName) {
+
+    public static void createUser(UserID id, String nickName) {
         try (Session session = getSession()) {
             session.beginTransaction();
 
@@ -125,12 +108,26 @@ public class DatabaseUtil {
                     .setParameter("locale", LanguageManager.defaultLanguage)
                     .getSingleResult();
 
-            User user = new User(userName, nickName, pref.getId());
+            User user = new User(id, nickName, pref.getId());
             session.persist(user);
             session.getTransaction().commit();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static User getUser(UserID id) {
+        User user = null;
+        try (Session session = getSession();){
+            session.getTransaction().begin();
+
+            user = session.get(User.class, id);
+
+            session.getTransaction().commit();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return user;
     }
 
     private List<Preference> loadPreferencesFromFile(String filePath)  {

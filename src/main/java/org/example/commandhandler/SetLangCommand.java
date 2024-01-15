@@ -1,6 +1,8 @@
 package org.example.commandhandler;
 
 import model.DatabaseUtil;
+import model.User;
+import model.UserID;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.lib.AudioFileManager;
@@ -11,7 +13,7 @@ import java.io.IOException;
 
 public class SetLangCommand implements CommandStrategy {
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NotNull SlashCommandInteractionEvent event) {
         OptionMapping option = event.getOption("tts-language");
         if (option == null) {
             return;
@@ -25,18 +27,20 @@ public class SetLangCommand implements CommandStrategy {
             LanguageManager manager = new LanguageManager();
             boolean isValidLanguage = manager.isValidLanguage(language);
             if (isValidLanguage) {
-
-                AudioFileManager audioFileManager = new AudioFileManager();
-                String nickName = event.getMember().getUser().getEffectiveName();
                 String userName = event.getMember().getUser().getName();
+                long guildID = event.getGuild().getIdLong();
+                UserID id = new UserID(guildID, userName);
 
-                audioFileManager.make(language, nickName, userName);
-                DatabaseUtil.changePreference(userName, language);
+                User user = DatabaseUtil.getUser(id);
+
+                AudioFileManager.make(language, user.getNickName(), id);
+                DatabaseUtil.changePreference(id, language);
                 event.reply("TTS voice set to: " + language).setEphemeral(true).queue();
+
             } else {
                 event.reply("Invalid language option.").setEphemeral(true).queue();
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

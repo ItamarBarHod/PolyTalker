@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="default/Hibernate" uuid="05f593b0-9312-4035-8e06-c1c979aa567a">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="53afa88e-c5d7-4376-b6ea-d10e27061146">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>Hibernate
 
-C:/Users/itama/IdeaProjects/Discord TTS Bot/src/main/resources/META-INF/persistence.xml</remarks>
+C:/Users/itama/IdeaProjects/Discord TTS Bot/src/main/resources/hibernate.cfg.xml</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/discordbot</jdbc-url>
       <jdbc-additional-properties>
