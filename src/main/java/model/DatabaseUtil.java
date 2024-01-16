@@ -11,10 +11,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 public class DatabaseUtil {
     private static final SessionFactory factory = new Configuration()
             .configure("hibernate.cfg.xml")
+            .setProperty("hibernate.connection.url", System.getenv("DB_URL"))
+            .setProperty("hibernate.connection.username", System.getenv("DB_USER"))
+            .setProperty("hibernate.connection.password", System.getenv("DB_PASS"))
             .addAnnotatedClass(User.class)
             .addAnnotatedClass(Preference.class)
             .buildSessionFactory();
