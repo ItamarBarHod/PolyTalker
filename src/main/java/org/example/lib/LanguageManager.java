@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LanguageManager {
 
@@ -11,16 +13,28 @@ public class LanguageManager {
     public final static String localeTxtPath = "./locale/locale.txt";
 
     public boolean isValidLanguage(String language) throws FileNotFoundException {
+
         File file = new File(localeTxtPath);
         Scanner scanner = new Scanner(file);
-        language += ':';
 
         while (scanner.hasNextLine()) {
-            if (scanner.nextLine().contains(language)) {
+            String result = findSubstring(scanner.nextLine());
+            if (result.equals(language)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static String findSubstring(String line) {
+
+        int startIndex = line.indexOf(' ');
+        int endIndex = line.indexOf(':', startIndex);
+
+        if (startIndex != -1 && endIndex != -1) {
+            return line.substring(startIndex + 1, endIndex).trim();
+        }
+        return "";
     }
 
     public static void createLocaleFile() throws IOException {

@@ -40,7 +40,7 @@ public class SetLangCommand implements CommandStrategy {
             } else {
                 event.reply("Invalid language option.").setEphemeral(true).queue();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

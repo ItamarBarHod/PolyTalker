@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
+sounds/
 .env
 .idea/modules.xml
 .idea/jarRepositories.xml
