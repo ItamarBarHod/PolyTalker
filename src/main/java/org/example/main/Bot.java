@@ -39,7 +39,6 @@ public class Bot {
 
     private JDA initJDA() throws InterruptedException {
         String token = System.getenv("TOKEN");
-        System.out.println("\n\n\n\n\n" + System.getenv("TOKEN") + "\n\n\n\n\n\n");
         JDA jda = JDABuilder.createDefault(token)
                 .setActivity(Activity.playing("/ttshelp"))
                 .setStatus(OnlineStatus.ONLINE)

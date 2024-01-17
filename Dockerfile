@@ -3,17 +3,11 @@ FROM maven:3.8.4-openjdk-11 AS builder
 
 # Set the working directory
 WORKDIR /app
-RUN mkdir -p target/lib
-
-# Copy only the POM file to download dependencies
-COPY pom.xml .
-
-# Download dependencies
-RUN mvn dependency:go-offline
+RUN mkdir -p /app/target/lib
 
 # Copy the entire project and build it
 COPY . .
-RUN mvn package
+RUN mvn clean install
 
 # Use a lightweight base image with Java to run the application
 FROM openjdk:11
