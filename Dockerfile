@@ -3,6 +3,7 @@ FROM maven:3.8.4-openjdk-11 AS builder
 
 # Set the working directory
 WORKDIR /app
+RUN mkdir -p target/lib
 
 # Copy only the POM file to download dependencies
 COPY pom.xml .
@@ -23,8 +24,8 @@ WORKDIR /app
 # Copy the JAR file, dependencies, and other necessary files
 COPY --from=builder /app/target/Discord-TTS-Bot-1.0-SNAPSHOT.jar .
 COPY --from=builder /app/target/lib /app/lib
-COPY locale /app/locale
-COPY sounds /app/sounds
+RUN mkdir -p /app/locale
+RUN mkdir -p /app/sounds
 
 # Install Python and necessary dependencies
 RUN apt-get update && \
