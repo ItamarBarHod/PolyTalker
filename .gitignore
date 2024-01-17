@@ -5,6 +5,7 @@ target/
 
 ### IntelliJ IDEA ###
 sounds/
+locale/
 .env
 .idea/modules.xml
 .idea/jarRepositories.xml

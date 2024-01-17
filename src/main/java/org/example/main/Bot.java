@@ -32,14 +32,14 @@ public class Bot {
         LanguageManager.createLocaleFile();
         DatabaseUtil.getSession();
 
-        Dotenv config = Dotenv.configure().load();
-        JDA jda = initJDA(config);
+        JDA jda = initJDA();
 
         initDatabase(jda);
     }
 
-    private JDA initJDA(Dotenv config) throws InterruptedException {
-        String token = config.get("TOKEN");
+    private JDA initJDA() throws InterruptedException {
+        String token = System.getenv("TOKEN");
+        System.out.println("\n\n\n\n\n" + System.getenv("TOKEN") + "\n\n\n\n\n\n");
         JDA jda = JDABuilder.createDefault(token)
                 .setActivity(Activity.playing("/ttshelp"))
                 .setStatus(OnlineStatus.ONLINE)
