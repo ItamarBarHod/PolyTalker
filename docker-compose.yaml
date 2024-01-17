@@ -5,7 +5,9 @@ services:
     image: mysql
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: itsmelolx
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    env_file:
+      - .env
     ports:
       - "3307:3306"
     networks:
