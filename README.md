@@ -27,7 +27,7 @@ DB_USER=YOUR_MYSQL_DATABASE_USER
 DB_PASS=YOUR_MYSQL_DATABASE_PASSWORD
 ```
 
-- **TOKEN:** Obtain this unique token from the [Discord Developer Portal](https://discord.com/developers/applications/).
+- **TOKEN:** Obtain a unique token from the [Discord Developer Portal](https://discord.com/developers/applications/).
 - **DB_URL:** The URL of your MySQL database.
 - **DB_USER:** Your MySQL database username.
 - **DB_PASS:** Your MySQL database password.
