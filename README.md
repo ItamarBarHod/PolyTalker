@@ -15,8 +15,8 @@ PolyTalker comes with the following commands:
 
 /setlang: Set your preferred language for PolyTalker.
 
-Example: /setlang en  <- sets the language to english.
-By default the language is set to ja (japanese).
+Example: /setlang en  <- sets the language to English.
+By default the language is set to ja (Japanese).
 
 
 ## Setting up the Environment
