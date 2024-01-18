@@ -1,6 +1,6 @@
 # PolyTalker
 
-PolyTalker is a Discord TTS bot implemented with Discord JDA API, Lavaplayer API, and utilizes the gTTS Python library. The bot is designed to greet users who join the channel with their username in any language they prefer.
+PolyTalker is a Discord TTS bot implemented with Discord JDA API, Lavaplayer API, and utilizes the gTTS Python library. The bot is designed to greet users who join the channel with their nickname in any language they prefer.
 
 ## Add PolyTalker to Your Discord Server
 
