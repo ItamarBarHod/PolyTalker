@@ -10,6 +10,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import model.DatabaseUtil;
 import model.User;
 import model.UserID;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,11 +19,10 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.example.AudioPlayerHandler.AudioPlayerLoadHandler;
 import org.example.AudioPlayerHandler.AudioPlayerSendHandler;
 import org.example.lib.AudioFileManager;
+import org.example.lib.FileAndConsoleLogger;
 import org.example.lib.LanguageManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 
 import static org.example.lib.AudioFileManager.createAudioPath;
 
@@ -36,25 +37,43 @@ public class ChannelListener extends ListenerAdapter {
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
         super.onGuildVoiceUpdate(event);
 
-        VoiceChannel channel = (VoiceChannel) event.getChannelJoined();
-        boolean isBot = event.getMember().getUser().isBot();
-        if (isBot || channel == null || channel.getName().equals("AFK")) {
+        Member selfMember = event.getGuild().getSelfMember();
+        boolean canConnect = selfMember.hasPermission(Permission.VOICE_CONNECT);
+        if(!canConnect) {
+            FileAndConsoleLogger.logWarning("Cannot join to channel because of voice connected permission");
             return;
         }
 
-        String userName = event.getMember().getUser().getName();
-        String nickName = event.getMember().getEffectiveName();
-        long guildID = event.getGuild().getIdLong();
-        UserID id = new UserID(guildID, userName);
-        User user = DatabaseUtil.getUser(id);
+        String userName = null;
+        String nickName = null;
+        long guildID = -1;
+        User user = null;
+        FileAndConsoleLogger.logInfo("Event:" + event);
+        try {
+            boolean isBot = event.getMember().getUser().isBot();
+            VoiceChannel channel = (VoiceChannel) event.getChannelJoined();
+            if (isBot || channel == null || channel.getName().equals("AFK")) {
+                return;
+            }
+            userName = event.getMember().getUser().getName();
+            nickName = event.getMember().getEffectiveName();
+            guildID = event.getGuild().getIdLong();
+            UserID id = new UserID(guildID, userName);
+            user = DatabaseUtil.getUser(id);
 
-        if (user == null) {
-            createUser(id, nickName);
-        } else if (DatabaseUtil.changedNickname(id, nickName)) {
-            updateUser(id, nickName, DatabaseUtil.getLocale(id));
+            if (user == null) {
+                createUser(id, nickName);
+            } else if (DatabaseUtil.changedNickname(id, nickName)) {
+                updateUser(id, nickName, DatabaseUtil.getLocale(id));
+            }
+
+            playAudio(event, channel);
+        } catch (Exception e) {
+            FileAndConsoleLogger.logError(e.getMessage());
+            FileAndConsoleLogger.logInfo("Username: " + userName + " nickName: " + nickName + " guildID: " + guildID);
+            FileAndConsoleLogger.logInfo(event.getGuild() + " " + event.getMember());
+            FileAndConsoleLogger.logInfo("User: " + user);
         }
-
-        playAudio(event, channel);
     }
 
     private void playAudio(GuildVoiceUpdateEvent event, VoiceChannel channel) {

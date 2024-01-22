@@ -1,6 +1,5 @@
 package org.example.lib;
 
-import model.User;
 import model.UserID;
 
 import java.io.File;
@@ -16,12 +15,15 @@ public class AudioFileManager {
     public static void make(String language, String nickName, UserID id) {
 
         String[] command = getMakeCommand(language, nickName, id);
+        FileAndConsoleLogger.logInfo(Arrays.toString(command));
+
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(Arrays.asList(command));
             processBuilder.directory(new File(soundPath));
             Process process = processBuilder.start();
             process.waitFor();
         } catch (InterruptedException | IOException e) {
+            FileAndConsoleLogger.logError(e.getMessage());
             throw new RuntimeException(e);
         }
     }

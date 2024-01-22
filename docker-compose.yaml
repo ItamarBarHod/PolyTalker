@@ -6,6 +6,7 @@ services:
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: discordbot
     env_file:
       - .env
     ports:
