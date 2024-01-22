@@ -20,6 +20,7 @@ COPY --from=builder /app/target/Discord-TTS-Bot-1.0-SNAPSHOT.jar .
 COPY --from=builder /app/target/lib /app/lib
 RUN mkdir -p /app/locale
 RUN mkdir -p /app/sounds
+RUN touch /app/logfile.log
 
 # Install Python and necessary dependencies
 RUN apt-get update && \

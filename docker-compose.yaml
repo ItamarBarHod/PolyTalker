@@ -32,6 +32,8 @@ services:
       - discordbotnetwork
     depends_on:
       - mysql
+    volumes:
+      - ./logfile.log:/app/logfile.log
 
 networks:
   discordbotnetwork:
