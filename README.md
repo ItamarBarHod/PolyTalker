@@ -28,12 +28,16 @@ To set up the environment for PolyTalker, you need to create a `.env` file with 
 
 ```env
 TOKEN=YOUR_DISCORD_BOT_TOKEN
+DB_NAME=YOUR_MYSQL_DATABASE_NAME
+DB_PORT=YOUR_MYSQL_DATABASE_PORT
 DB_URL=YOUR_MYSQL_DATABASE_URL
 DB_USER=YOUR_MYSQL_DATABASE_USER
 DB_PASS=YOUR_MYSQL_DATABASE_PASSWORD
 ```
 
 - **TOKEN:** Obtain a unique token from the [Discord Developer Portal](https://discord.com/developers/applications/).
+- **DB_NAME:** Your MySQL database name.
+- **DB_PORT:** The Port of your MySQL database.
 - **DB_URL:** The URL of your MySQL database.
 - **DB_USER:** Your MySQL database username.
 - **DB_PASS:** Your MySQL database password.
