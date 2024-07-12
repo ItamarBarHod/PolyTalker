@@ -14,7 +14,7 @@ public class FileAndConsoleLogger {
         logger.setLevel(Level.ALL);
 
         try {
-            FileHandler fileHandler = new FileHandler("logfile.log", true);
+            FileHandler fileHandler = new FileHandler("/logs/logfile.log", true);
             fileHandler.setLevel(Level.ALL);
 
             ConsoleHandler consoleHandler = new ConsoleHandler();
