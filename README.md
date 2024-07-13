@@ -62,8 +62,7 @@ If you choose to deploy PolyTalker, a Dockerfile and docker-compose.yaml file ar
 5. Run the following commands:
 
 ```bash
-docker-compose build
-docker-compose up -d
+docker-compose up
 ```
 
 This will build and run PolyTalker in a Docker container, allowing for easy deployment and isolation.
