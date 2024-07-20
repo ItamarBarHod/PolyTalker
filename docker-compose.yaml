@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mysql:
-    image: mysql
+    image: staff0rd/mysql-minimal
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
@@ -13,6 +13,7 @@ services:
       - "3306:3306"
     networks:
       - discordbotnetwork
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   java-app:
     build:
@@ -34,6 +35,5 @@ services:
       - mysql
     volumes:
       - ./logs:/app/logfile.log
-
 networks:
   discordbotnetwork:
