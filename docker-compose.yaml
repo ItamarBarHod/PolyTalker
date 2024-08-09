@@ -15,7 +15,6 @@ services:
       - discordbotnetwork
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 2s
       timeout: 20s
       retries: 10
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
