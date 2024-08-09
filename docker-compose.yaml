@@ -14,7 +14,7 @@ services:
     networks:
       - discordbotnetwork
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$DB_URL --password=$$DB_PASS
+      test: mysqladmin ping -h 127.0.0.1 -u $$DB_USER --password=$$DB_PASS
       interval: 2s
       timeout: 20s
       retries: 10
