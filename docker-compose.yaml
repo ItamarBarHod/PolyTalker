@@ -14,7 +14,7 @@ services:
     networks:
       - discordbotnetwork
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: mysqladmin ping -h 127.0.0.1 -u $$DB_URL --password=$$DB_PASS
       timeout: 20s
       retries: 10
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
